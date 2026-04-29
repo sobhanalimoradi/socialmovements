@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sea Shepherd | Social Movement Inquiry</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            /* Oceanic Bioluminescent Palette */
+            --bg-deep: #020813;
+            --bg-mid: #0a192f;
+            --text-main: #e6f1ff;
+            --text-muted: #8892b0;
+            --accent-cyan: #64ffda;
+            --accent-blue: #0077ff;
+            --mouse-x: 50vw;
+            --mouse-y: 50vh;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            background-color: var(--bg-deep);
+            overflow-x: hidden;
+            line-height: 1.6;
+            font-size: 18px;
+            /* Hide scrollbar for pure slideshow feel */
+            scrollbar-width: none; 
+            -ms-overflow-style: none;
+        }
+        
+        body::-webkit-scrollbar { 
+            display: none; 
+        }
+
+        /* 1. Interactive Ocean Environment */
+        .ambient-environment {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: -2;
+            background: radial-gradient(circle at center, var(--bg-mid) 0%, var(--bg-deep) 100%);
+            overflow: hidden;
+        }
+
+        /* Caustic light effect */
+        .caustics {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.015' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15' style='mix-blend-mode: overlay;'/%3E%3C/svg%3E");
+            animation: drift 60s linear infinite;
+            pointer-events: none;
+        }
+
+        /* Interactive Sonar Glow tracking mouse */
+        .cursor-glow {
+            position: absolute;
+            width: 60vw; height: 60vw;
+            background: radial-gradient(circle, rgba(100, 255, 218, 0.08) 0%, transparent 60%);
+            top: -30vw; left: -30vw;
+            transform: translate(var(--mouse-x), var(--mouse-y));
+            pointer-events: none;
+            filter: blur(40px);
+            transition: transform 0.8s cubic-bezier(0.1, 0.8, 0.2, 1);
+            will-change: transform;
+        }
+
+        @keyframes drift {
+            0% { background-position: 0 0; }
+            100% { background-position: 100% 100%; }
+        }
+
+        /* 2. Slideshow Scroll Mechanics */
+        main {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            position: relative;
+            min-height: 100vh;
+            width: 100vw;
+            scroll-snap-align: start;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5vh 10vw;
+        }
+
+        /* 3. Typography & "Box-less" Layout */
+        .content-wrapper {
+            max-width: 1000px;
+            width: 100%;
+            /* Animation states */
+            opacity: 0;
+            transform: translateY(40px) scale(0.98);
+            transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+            /* Soft text shadow ensures readability against any background shift */
+            text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+        }
+
+        .slide.is-visible .content-wrapper {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .rubric-tag {
+            font-family: 'Inter', sans-serif;
+            color: var(--accent-cyan);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 20px;
+            display: block;
+            font-weight: 600;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(4rem, 8vw, 7rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 400;
+            color: var(--text-main);
+            margin-bottom: 30px;
+            line-height: 1.2;
+        }
+
+        p {
+            font-size: clamp(1.1rem, 2vw, 1.3rem);
+            color: var(--text-muted);
+            margin-bottom: 25px;
+            max-width: 800px;
+            font-weight: 300;
+        }
+
+        strong {
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        ul {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        li {
+            font-size: clamp(1.1rem, 2vw, 1.25rem);
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        li::before {
+            content: '›';
+            position: absolute;
+            left: 0;
+            color: var(--accent-cyan);
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        /* 4. Custom Timeline Visuals (Integrated, no boxes) */
+        .timeline {
+            border-left: 2px solid rgba(100, 255, 218, 0.3);
+            margin-left: 10px;
+            padding-left: 40px;
+        }
+
+        .timeline-event {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .timeline-event::before {
+            content: '';
+            position: absolute;
+            left: -47px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent-cyan);
+            box-shadow: 0 0 15px var(--accent-cyan);
+        }
+
+        .year {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--text-main);
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        /* Slide Indicator Dots */
+        .slide-nav {
+            position: fixed;
+            right: 3vw;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot.active {
+            background: var(--accent-cyan);
+            transform: scale(1.5);
+            box-shadow: 0 0 10px var(--accent-cyan);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-environment">
+        <div class="caustics"></div>
+        <div class="cursor-glow" id="cursorGlow"></div>
+    </div>
+
+    <div class="slide-nav" id="slideNav"></div>
+
+    <main id="scroller">
+        
+        <section class="slide">
+            <div class="content-wrapper">
+                <span class="rubric-tag">Year 10 Sociology | Social Movement Research</span>
+                <h1>Sea Shepherd.</h1>
+                <p style="font-size: 1.5rem; color: var(--accent-cyan);">Direct Action Marine Conservation.</p>
+                <p>Scroll to navigate the inquiry.</p>
+            </div>
+        </section>
+
+        <section class="slide">
+            <div class="content-wrapper">
+                <span class="rubric-tag">Concerns & Goals</span>
+                <h2>Defending the Abyss.</h2>
+                <p>The Sea Shepherd Conservation Society is an international non-profit, marine wildlife conservation organization. Their primary concern is the catastrophic destruction of marine habitats and the systematic slaughter of wildlife in the world's oceans.</p>
+                <p><strong>What they are trying to achieve:</strong> Unlike traditional environmental groups that focus on lobbying and peaceful protest, Sea Shepherd’s ultimate goal is to physically intervene to enforce international conservation laws. They aim to end illegal poaching, halt whaling operations, and protect vulnerable ecosystems from exploitation.</p>
+            </div>
+        </section>
+
+        <section class="slide">
+            <div class="content-wrapper">
+                <span class="rubric-tag">Movement Origins</span>
+                <h2>Born from Frustration.</h2>
+                <p>The movement originated in 1977, founded by Paul Watson, one of the original founding members of Greenpeace. The catalyst for the movement's formation was a deep ideological split.</p>
+                <p><strong>The Trigger Event:</strong> During a campaign protecting seal pups, Watson physically intervened by taking a club away from a sealer. Greenpeace, strictly committed to non-violent witnessing and bearing testimony, expelled Watson. Believing that merely "taking pictures" of environmental crimes was insufficient to stop them, Watson founded the Earth Force Society (later Sea Shepherd) to pioneer aggressive, physical intervention.</p>
+            </div>
+        </section>
+
+        <section class="slide">
+            <div class="content-wrapper">
+                <span class="rubric-tag">Strategies & Actions</span>
+                <h2>Aggressive Intervention.</h2>
+                <p>Sea Shepherd operates under the mandate of the UN World Charter for Nature, which allows private organizations to uphold international conservation law. Their strategies are controversial and highly physical:</p>
+                <ul>
+                    <li><strong>Direct Action/Vessel Ramming:</strong> Historically, Sea Shepherd has actively rammed and disabled illegal whaling ships (such as the infamous ramming of the pirate whaler <em>Sierra</em> in 1979).</li>
+                    <li><strong>Prop-fouling:</strong> Throwing reinforced ropes into the waters to entangle the propellers of whaling vessels, completely immobilizing them in freezing waters.</li>
+                    <li><strong>Media Weaponization:</strong> Allowing camera crews onboard (resulting in the hit TV series <em>Whale Wars</em>). They utilize high-drama footage to shine a spotlight on illegal activities in remote oceans.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="slide">
+            <div class="content-wrapper">
+                <span class="rubric-tag">Opposition & Repression</span>
+                <h2>The Empire Strikes Back.</h2>
+                <p><strong>The Main Opposition:</strong> The primary adversaries of Sea Shepherd have historically been the Japanese Whaling Fleet (specifically the Institute of Cetacean Research), alongside the governments of Japan, Norway, and Canada (regarding seal culls).</p>
+                <p><strong>Attempts to Stop the Movement:</strong></p>
+                <ul>
+                    <li><strong>Legal Warfare:</strong> The Japanese Institute of Cetacean Research successfully filed an injunction in US courts, severely limiting how close US-based Sea Shepherd vessels could get to whalers.</li>
+                    <li><strong>Interpol & Arrests:</strong> Japan and Costa Rica issued international arrest warrants for founder Paul Watson, leading to his temporary detention in Germany.</li>
+                    <li><strong>Military Force:</strong> Whaling vessels have retaliated with water cannons, acoustic weapons (LRADs), and physical rammings of Sea Shepherd vessels (such as the sinking of the <em>Ady Gil</em>).</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="slide">
+            <div class="content-wrapper">
+                <span class="rubric-tag">Societal & Media View</span>
+                <h2>Heroes or Eco-Terrorists?</h2>
+                <p>Societal views of Sea Shepherd are intensely polarized, largely shaped by media representation.</p>
+                <p><strong>The "Eco-Terrorist" Label:</strong> Many governments and conservative media outlets view their tactics—such as ramming ships and throwing butyric acid (stink bombs) onto decks—as inherently violent and dangerous, officially labeling them as eco-terrorists or pirates.</p>
+                <p><strong>The "Heroic Vigilante" Label:</strong> Conversely, mainstream audiences, heavily influenced by the Animal Planet series <em>Whale Wars</em>, view them as courageous vigilantes stepping in where corrupt governments fail. They gained massive celebrity backing (Red Hot Chili Peppers, Sean Connery) and significant public funding due to this "underdog" media portrayal.</p>
+            </div>
+        </section>
+
+        <section class="slide">
+            <div class="content-wrapper">
+                <span class="rubric-tag">Historical Timeline</span>
+                <h2>Key Events.</h2>
+                <div class="timeline">
+                    <div class="timeline-event">
+                        <span class="year">1977</span>
+                        <p>Paul Watson leaves Greenpeace and establishes the Earth Force Society (soon renamed Sea Shepherd).</p>
+                    </div>
+                    <div class="timeline-event">
+                        <span class="year">1979</span>
+                        <p>The first major direct action: Sea Shepherd hunts down and rams the notorious pirate whaling ship, the <em>Sierra</em>.</p>
+                    </div>
+                    <div class="timeline-event">
+                        <span class="year">2005</span>
+                        <p>Launch of the Antarctic Whale Defense Campaigns, leading to decades of clashes in the Southern Ocean Sanctuary.</p>
+                    </div>
+                    <div class="timeline-event">
+                        <span class="year">2008</span>
+                        <p>Animal Planet premieres <em>Whale Wars</em>, rocketing the movement into mainstream global consciousness.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide">
+            <div class="content-wrapper">
+                <span class="rubric-tag">Evaluation of Success</span>
+                <h2>Measuring the Impact.</h2>
+                <p>Analyzing the movement with evidence reveals a highly successful track record, despite controversies.</p>
+                <p><strong>Direct Savings:</strong> During their Antarctic campaigns (2005–2017), Sea Shepherd's physical harassment explicitly saved the lives of over 6,000 whales. Their continuous disruption made it economically unviable for the Japanese fleet to meet their quotas.</p>
+                <p><strong>Strategic Shift & Legitimacy:</strong> Recently, the movement has evolved. They have transitioned from rogue vigilantes to legitimate partners. Sea Shepherd Global now partners directly with governments in Africa (e.g., Liberia, Gabon) to provide vessels and crew to patrol sovereign waters, resulting in the arrest of dozens of illegal, unreported, and unregulated (IUU) fishing vessels. This shift proves long-term, systemic success.</p>
+            </div>
+        </section>
+
+        <section class="slide">
+            <div class="content-wrapper">
+                <span class="rubric-tag">References</span>
+                <h2>Bibliography.</h2>
+                <ul style="font-size: 1rem; margin-top: 20px;">
+                    <li><strong>Sea Shepherd Global. (2024).</strong> <em>Our History & Campaigns</em>. Retrieved from https://www.seashepherdglobal.org/ <br><span style="color:var(--text-muted); font-size: 0.9rem;">(Used to outline the origins of the movement, key timeline dates, and current IUU fishing strategies.)</span></li>
+                    <li><strong>The New York Times. (2013).</strong> <em>Court Orders Anti-Whaling Group to Keep Its Distance</em>. Retrieved from https://www.nytimes.com/ <br><span style="color:var(--text-muted); font-size: 0.9rem;">(Used to evaluate the legal opposition and repression faced by the movement from the Japanese Institute of Cetacean Research.)</span></li>
+                    <li><strong>Animal Planet / Discovery. (2008-2015).</strong> <em>Whale Wars Documentary Series</em>. <br><span style="color:var(--text-muted); font-size: 0.9rem;">(Reference used to evaluate societal and media views, and how media weaponization acts as a core strategy.)</span></li>
+                    <li><strong>The Guardian. (2017).</strong> <em>Sea Shepherd drops Antarctic anti-whaling campaign</em>. Retrieved from https://www.theguardian.com/ <br><span style="color:var(--text-muted); font-size: 0.9rem;">(Used as evidence to analyze the success and eventual conclusion of the Southern Ocean whaling campaigns.)</span></li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // 1. Mouse Tracking for Caustic Glow
+        const cursorGlow = document.getElementById('cursorGlow');
+        let currentX = window.innerWidth / 2;
+        let currentY = window.innerHeight / 2;
+        let targetX = currentX;
+        let targetY = currentY;
+
+        window.addEventListener('mousemove', (e) => {
+            targetX = e.clientX;
+            targetY = e.clientY;
+        });
+
+        function animateGlow() {
+            currentX += (targetX - currentX) * 0.08;
+            currentY += (targetY - currentY) * 0.08;
+            document.documentElement.style.setProperty('--mouse-x', `${currentX}px`);
+            document.documentElement.style.setProperty('--mouse-y', `${currentY}px`);
+            requestAnimationFrame(animateGlow);
+        }
+        animateGlow();
+
+        // 2. Slide Navigation & Intersection Observer
+        const slides = document.querySelectorAll('.slide');
+        const navContainer = document.getElementById('slideNav');
+
+        // Create dots based on number of slides
+        slides.forEach((_, index) => {
+            const dot = document.createElement('div');
+            dot.classList.add('nav-dot');
+            dot.addEventListener('click', () => {
+                slides[index].scrollIntoView({ behavior: 'smooth' });
+            });
+            navContainer.appendChild(dot);
+        });
+
+        const dots = document.querySelectorAll('.nav-dot');
+
+        const observerOptions = {
+            root: document.getElementById('scroller'),
+            threshold: 0.5 // Trigger when 50% of the slide is visible
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Add visibility class to trigger text animation
+                    entry.target.classList.add('is-visible');
+                    
+                    // Update navigation dots
+                    const index = Array.from(slides).indexOf(entry.target);
+                    dots.forEach(dot => dot.classList.remove('active'));
+                    if(dots[index]) {
+                        dots[index].classList.add('active');
+                    }
+                } else {
+                    // Optional: remove class when out of view to re-trigger animation upon return
+                    // entry.target.classList.remove('is-visible');
+                }
+            });
+        }, observerOptions);
+
+        slides.forEach(slide => observer.observe(slide));
+    </script>
+</body>
+</html>
