@@ -14,7 +14,7 @@
         }
 
         :root {
-            /* High Saturation, High Opacity Pastel Blue Vibe */
+            /* High Saturation Pastel Blue Vibe */
             --bg-top: #80d8ff; 
             --bg-bottom: #40c4ff;
             --text-dark: #002538; 
@@ -48,7 +48,6 @@
             overflow: hidden;
         }
 
-        /* High opacity cursor glow */
         .cursor-glow {
             position: absolute;
             width: 60vw; height: 60vw;
@@ -60,7 +59,6 @@
             transition: transform 0.2s ease-out;
         }
 
-        /* Bright Floating Bubbles */
         .bubbles {
             position: fixed;
             top: 0; left: 0;
@@ -68,6 +66,7 @@
             z-index: -1;
             pointer-events: none;
         }
+        
         .bubble {
             position: absolute;
             bottom: -50px;
@@ -76,14 +75,14 @@
             box-shadow: inset -2px -2px 10px rgba(255,255,255,0.9), 2px 2px 8px rgba(0,0,0,0.05);
             animation: rise infinite ease-in;
         }
+        
         @keyframes rise {
             0% { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
             20% { opacity: 1; }
             100% { transform: translateY(-110vh) translateX(30px) scale(1.2); opacity: 0; }
         }
 
-        /* --- Whale Fleet Animation --- */
-        /* This wrapper ensures the whales never cause horizontal scrollbars */
+        /* --- Constant Speed Whale Fleet Animation --- */
         .animation-boundary {
             position: fixed;
             top: 0; left: 0;
@@ -96,17 +95,17 @@
         .whale-fleet-container {
             position: absolute;
             top: 15%;
-            left: -1200px; /* Start completely off-screen to the left */
-            width: 1000px;
-            color: rgba(255, 255, 255, 0.35); /* Pastel integration */
-            /* Linear animation ensures steady, constant speed */
-            animation: swimAcross 30s linear infinite;
+            left: -1200px; 
+            width: 1200px;
+            height: 400px;
+            /* Solid white base color prevents overlapping transparent artifacts */
+            color: #ffffff; 
+            animation: swimAcross 35s linear infinite;
         }
 
         .swimming-whales {
             width: 100%;
-            height: auto;
-            /* Separate vertical bobbing so it doesn't affect forward speed */
+            height: 100%;
             animation: gentleBob 6s ease-in-out infinite alternate;
         }
 
@@ -116,8 +115,8 @@
         }
 
         @keyframes gentleBob {
-            0% { transform: translateY(-15px); }
-            100% { transform: translateY(15px); }
+            0% { transform: translateY(-20px); }
+            100% { transform: translateY(20px); }
         }
 
         /* --- Slideshow Layout --- */
@@ -127,7 +126,7 @@
             scroll-snap-type: y mandatory;
             scroll-behavior: smooth;
             position: relative;
-            z-index: 10; /* Keeps text above whales */
+            z-index: 10;
         }
 
         .slide {
@@ -205,7 +204,6 @@
 
         strong { color: var(--text-dark); font-weight: 800; }
 
-        /* Staggered List Animations */
         ul { list-style: none; margin-bottom: 30px; }
         
         li {
@@ -292,6 +290,7 @@
             gap: 15px;
             z-index: 100;
         }
+        
         .nav-dot {
             width: 12px; height: 12px;
             border-radius: 50%;
@@ -300,6 +299,7 @@
             transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
             border: 2px solid transparent;
         }
+        
         .nav-dot.active {
             background: var(--text-dark);
             transform: scale(1.6);
@@ -318,19 +318,26 @@
     
     <div class="animation-boundary">
         <div class="whale-fleet-container">
-            <svg class="swimming-whales" viewBox="0 0 1000 400" xmlns="http://www.w3.org/2000/svg">
+            <svg class="swimming-whales" viewBox="0 0 1200 400" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <g id="whale-silhouette">
-                        <path d="M 280,60 C 240,30 140,20 80,50 C 40,65 20,55 5,40 C 15,55 10,70 0,80 C 20,80 40,70 80,75 C 150,85 230,80 280,60 Z" fill="currentColor"/>
-                        <path d="M 180,65 C 170,95 190,115 205,100 C 195,90 185,75 180,65 Z" fill="currentColor"/>
-                        <path d="M 140,35 C 130,20 120,5 110,15 C 120,25 125,30 130,38 Z" fill="currentColor"/>
+                        <path d="M 280,60 
+                                 C 240,30 140,20 80,50 
+                                 C 40,65 20,55 5,40 
+                                 C 15,55 10,70 0,80 
+                                 C 20,80 40,70 80,75 
+                                 C 120,82 150,85 165,80 
+                                 C 175,105 190,115 200,95 
+                                 C 220,85 250,75 280,60 Z" 
+                              fill="currentColor"/>
                     </g>
                 </defs>
-                <use href="#whale-silhouette" x="650" y="150" transform="scale(1.2)" opacity="0.9" />
-                <use href="#whale-silhouette" x="700" y="270" transform="scale(0.6)" opacity="0.85" />
-                <use href="#whale-silhouette" x="400" y="80" transform="scale(0.95)" opacity="0.7" />
-                <use href="#whale-silhouette" x="150" y="220" transform="scale(0.7)" opacity="0.4" />
-                <use href="#whale-silhouette" x="0" y="100" transform="scale(0.5)" opacity="0.25" />
+                
+                <use href="#whale-silhouette" transform="translate(800, 150) scale(1.2)" opacity="0.6" />
+                <use href="#whale-silhouette" transform="translate(900, 260) scale(0.6)" opacity="0.5" />
+                <use href="#whale-silhouette" transform="translate(450, 80) scale(0.9)" opacity="0.4" />
+                <use href="#whale-silhouette" transform="translate(150, 220) scale(0.7)" opacity="0.3" />
+                <use href="#whale-silhouette" transform="translate(-50, 120) scale(0.5)" opacity="0.2" />
             </svg>
         </div>
     </div>
@@ -341,7 +348,7 @@
         
         <section class="slide">
             <div class="content-wrapper" style="text-align: center;">
-                <span class="rubric-tag">Social Movement Research Task</span>
+                <span class="rubric-tag">Social Movement Research Task [cite: 26, 28]</span>
                 <h1>Sea Shepherd</h1>
                 <p style="font-size: 1.6rem; color: var(--text-dark); font-weight: 800;">Direct Action Marine Conservation.</p>
                 <p style="margin-top: 40px; font-size: 1rem; color: var(--text-mid);">Scroll down to navigate</p>
@@ -350,7 +357,7 @@
 
         <section class="slide">
             <div class="content-wrapper">
-                <span class="rubric-tag">Explain the concerns & goals</span>
+                <span class="rubric-tag">Explain the concerns of the social movement and describe what the movement is trying to achieve. [cite: 31]</span>
                 <h2>Defending the Oceans.</h2>
                 <p>Sea Shepherd is an international, non-profit marine wildlife conservation group. Their primary concern is that the world's oceans are being systematically destroyed by illegal poaching, overfishing, and habitat destruction. They are deeply concerned that international laws protecting marine life exist on paper, but governments completely fail to actually enforce them out on the open water.</p>
                 <p><strong>What they are trying to achieve:</strong> Unlike regular environmental charities that just lobby politicians or hold up protest signs, Sea Shepherd’s core goal is physical intervention. They are trying to actively step in and act as a law enforcement body on the high seas. Their goal is to physically block illegal whalers, shut down poaching operations, and forcefully protect vulnerable ecosystems when no one else will.</p>
@@ -359,7 +366,7 @@
 
         <section class="slide">
             <div class="content-wrapper">
-                <span class="rubric-tag">Explain how the social movement originated</span>
+                <span class="rubric-tag">Explain how the social movement originated. What events or issues led to the formation of this movement? [cite: 32]</span>
                 <h2>A Split from Greenpeace.</h2>
                 <p>The Sea Shepherd movement originated in 1977, and it was actually born out of massive frustration within another famous environmental group. The founder, Paul Watson, was originally one of the early founding members of Greenpeace. However, a major ideological clash led to the formation of this new movement.</p>
                 <p><strong>The events that led to its formation:</strong> During a 1977 Greenpeace campaign to protect baby harp seals from being clubbed to death by hunters, Paul Watson physically intervened. He grabbed a club out of a hunter's hand and threw it in the freezing water. Greenpeace had a strict internal rule of only "bearing witness" (taking photos and protesting peacefully). Because Watson used physical force, they voted him out of the organization. Believing that just taking pictures wasn't saving any animals, Watson formed the Earth Force Society (which quickly became Sea Shepherd) specifically to use aggressive, direct action.</p>
@@ -368,7 +375,7 @@
 
         <section class="slide">
             <div class="content-wrapper">
-                <span class="rubric-tag">Outline the strategies or actions</span>
+                <span class="rubric-tag">Outline the strategies or actions the movement uses to try to achieve its goals, using examples. [cite: 33]</span>
                 <h2>Aggressive Intervention.</h2>
                 <p>Sea Shepherd is famous for using highly controversial, physical strategies out at sea. They base their actions on the UN World Charter for Nature, which they claim allows citizens to uphold international conservation law. Their actions include:</p>
                 <ul>
@@ -381,7 +388,7 @@
 
         <section class="slide">
             <div class="content-wrapper">
-                <span class="rubric-tag">Identify the main opposition</span>
+                <span class="rubric-tag">Identify the main opposition to the social movement (e.g. governments, interest groups). [cite: 34]</span>
                 <h2>Who fights back?</h2>
                 <p>Because of their incredibly aggressive tactics, Sea Shepherd has racked up a massive list of powerful enemies over the decades.</p>
                 <p><strong>The Japanese Whaling Fleet & Government:</strong> The absolute biggest opposition to Sea Shepherd has been the Institute of Cetacean Research (the group running Japan's whaling program) and the Japanese government itself. Japan viewed Sea Shepherd's interference in the Southern Ocean as an attack on their culture and legal research.</p>
@@ -391,7 +398,7 @@
 
         <section class="slide">
             <div class="content-wrapper">
-                <span class="rubric-tag">Outline ways opposition has attempted to repress</span>
+                <span class="rubric-tag">Outline any ways this opposition has attempted to stop or repress the movement. [cite: 35]</span>
                 <h2>Legal and Physical Repression.</h2>
                 <p>The opposition hasn't just complained—they have actively tried to crush the movement using serious legal and physical force.</p>
                 <ul>
@@ -404,7 +411,7 @@
 
         <section class="slide">
             <div class="content-wrapper">
-                <span class="rubric-tag">Evaluate how people in society view the movement</span>
+                <span class="rubric-tag">Evaluate how people in society view the movement. Look at media articles. [cite: 36, 37]</span>
                 <h2>Eco-Terrorists or Heroes?</h2>
                 <p>Society's view of Sea Shepherd is completely polarized. If you look at media articles from conservative news outlets or government press releases, they are routinely labeled as reckless vigilantes or outright "eco-terrorists." Critics argue that throwing butyric acid (stink bombs) onto boat decks and ramming ships in freezing, isolated waters is insanely dangerous and puts human lives at risk for the sake of animals.</p>
                 <p>On the flip side, mainstream pop culture views them very differently. Thanks to media articles praising their bravery and the massive success of the TV show <em>Whale Wars</em>, millions of everyday people view them as absolute heroes. The public often sees them as the only group actually doing something while corrupt politicians sit back. Because of this positive media spin, they gained huge financial backing from celebrities like the Red Hot Chili Peppers and the late Sean Connery.</p>
@@ -413,7 +420,7 @@
 
         <section class="slide">
             <div class="content-wrapper">
-                <span class="rubric-tag">Create a timeline of key dates and events</span>
+                <span class="rubric-tag">Create a timeline of key dates and events, including when the movement started. [cite: 38]</span>
                 <h2>Historical Timeline</h2>
                 <div class="timeline">
                     <div class="timeline-event">
@@ -442,7 +449,7 @@
 
         <section class="slide">
             <div class="content-wrapper">
-                <span class="rubric-tag">Analyse how successful the movement has been so far</span>
+                <span class="rubric-tag">Analyse how successful the movement has been so far, using evidence. [cite: 39]</span>
                 <h2>Measuring the Impact.</h2>
                 <p>If we look at the hard evidence, Sea Shepherd has been remarkably successful in achieving its goals, despite the massive backlash.</p>
                 <p><strong>Direct Action Success:</strong> During their 12-year campaign in the Southern Ocean, their physical harassment was so relentless that the Japanese fleet consistently failed to meet their catch quotas. Sea Shepherd's interventions directly saved the lives of over 6,000 whales during that specific period alone.</p>
@@ -452,7 +459,7 @@
 
         <section class="slide">
             <div class="content-wrapper">
-                <span class="rubric-tag">Include at least 3 references</span>
+                <span class="rubric-tag">Include at least 3 references. [cite: 40]</span>
                 <h2>Bibliography</h2>
                 <ul>
                     <li><strong>Sea Shepherd Global. (2024).</strong> <em>Our History & Campaigns</em>. Retrieved from their official website. (Used as a primary source to outline the 1977 origins, key timeline dates, and their current strategies with African governments).</li>
@@ -472,15 +479,12 @@
             let bubble = document.createElement('div');
             bubble.classList.add('bubble');
             
-            // Randomize size heavily to make it dynamic
             let size = Math.random() * 25 + 10 + 'px';
             bubble.style.width = size;
             bubble.style.height = size;
             
-            // Spread across the screen
             bubble.style.left = Math.random() * 100 + 'vw';
             
-            // Organic animation timings
             bubble.style.animationDuration = Math.random() * 6 + 5 + 's';
             bubble.style.animationDelay = Math.random() * 5 + 's';
             
@@ -495,7 +499,6 @@
         window.addEventListener('mousemove', (e) => {
             currentX = e.clientX;
             currentY = e.clientY;
-            // Update CSS variables for smooth tracking
             document.documentElement.style.setProperty('--mouse-x', `${currentX}px`);
             document.documentElement.style.setProperty('--mouse-y', `${currentY}px`);
         });
@@ -504,7 +507,6 @@
         const slides = document.querySelectorAll('.slide');
         const navContainer = document.getElementById('slideNav');
 
-        // Create navigation dots dynamically based on slide count
         slides.forEach((_, index) => {
             const dot = document.createElement('div');
             dot.classList.add('nav-dot');
@@ -516,7 +518,6 @@
 
         const dots = document.querySelectorAll('.nav-dot');
 
-        // Intersection Observer to trigger slide animations
         const observerOptions = {
             root: document.getElementById('scroller'),
             threshold: 0.5 
@@ -525,17 +526,14 @@
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    // Trigger text animations
                     entry.target.classList.add('is-visible');
                     
-                    // Highlight correct dot
                     const index = Array.from(slides).indexOf(entry.target);
                     dots.forEach(dot => dot.classList.remove('active'));
                     if(dots[index]) {
                         dots[index].classList.add('active');
                     }
                 } else {
-                    // Reset animation when scrolled away
                     entry.target.classList.remove('is-visible');
                 }
             });
