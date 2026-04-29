@@ -48,6 +48,7 @@
             overflow: hidden;
         }
 
+        /* High opacity cursor glow */
         .cursor-glow {
             position: absolute;
             width: 60vw; height: 60vw;
@@ -59,6 +60,7 @@
             transition: transform 0.2s ease-out;
         }
 
+        /* Bright Floating Bubbles */
         .bubbles {
             position: fixed;
             top: 0; left: 0;
@@ -106,6 +108,7 @@
             transform: translateY(40px);
             transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
             text-shadow: 0 2px 15px rgba(255, 255, 255, 0.8);
+            z-index: 10;
         }
 
         .slide.is-visible .content-wrapper {
@@ -237,19 +240,35 @@
             border-radius: 8px;
         }
 
-        /* Fully Hand-Coded SVG Logo */
-        .visual-icon {
-            width: 220px;
-            height: auto;
-            margin-bottom: 25px;
-            color: var(--text-dark); /* Inherits the navy blue text color */
-            filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.15));
-            animation: bob 4s infinite alternate ease-in-out;
+        /* --- Custom Swimming Whale Animation --- */
+        .whale-container {
+            position: absolute;
+            top: 25%;
+            left: -50vw; /* Start way off-screen to the left */
+            width: 50vw; 
+            min-width: 400px;
+            color: rgba(255, 255, 255, 0.45); /* Bright pastel integration */
+            z-index: 1; /* Behind the text but above background */
+            pointer-events: none; /* Can't be clicked */
+            animation: swimAcross 22s linear infinite;
         }
 
-        @keyframes bob {
-            0% { transform: translateY(0) rotate(-2deg); }
-            100% { transform: translateY(-15px) rotate(2deg); }
+        .swimming-whale {
+            width: 100%;
+            height: auto;
+            animation: whaleBob 5s ease-in-out infinite alternate;
+        }
+
+        @keyframes swimAcross {
+            0% { transform: translateX(0) translateY(0) rotate(-4deg); }
+            25% { transform: translateX(50vw) translateY(-30px) rotate(2deg); }
+            75% { transform: translateX(120vw) translateY(30px) rotate(-4deg); }
+            100% { transform: translateX(180vw) translateY(0) rotate(2deg); }
+        }
+
+        @keyframes whaleBob {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(40px) rotate(4deg); }
         }
 
         /* Slide Nav Dots */
@@ -291,33 +310,15 @@
     <main id="scroller">
         
         <section class="slide">
-            <div class="content-wrapper" style="text-align: center;">
-                
-                <svg class="visual-icon" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                    
-                    <line x1="40" y1="40" x2="170" y2="190" stroke="currentColor" stroke-width="12" stroke-linecap="round"/>
-                    <path d="M20,65 Q5,5 65,20" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round"/>
-                    <line x1="40" y1="40" x2="15" y2="15" stroke="currentColor" stroke-width="10" stroke-linecap="round"/>
-                    <line x1="20" y1="65" x2="5" y2="50" stroke="currentColor" stroke-width="10" stroke-linecap="round"/>
-                    <line x1="65" y1="20" x2="50" y2="5" stroke="currentColor" stroke-width="10" stroke-linecap="round"/>
-                    
-                    <line x1="30" y1="190" x2="160" y2="40" stroke="currentColor" stroke-width="12" stroke-linecap="round"/>
-                    <path d="M160,40 C190,10 210,60 180,80 C160,95 145,75 160,60" fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round"/>
-
-                    <path d="M60,95 C60,25 140,25 140,95 C140,120 125,125 120,140 L80,140 C75,125 60,120 60,95 Z" fill="currentColor"/>
-                    <rect x="78" y="140" width="44" height="25" rx="5" fill="currentColor"/>
-                    
-                    <circle cx="80" cy="95" r="14" fill="var(--bg-bottom)"/>
-                    <circle cx="120" cy="95" r="14" fill="var(--bg-bottom)"/>
-                    <path d="M100,110 L90,130 L110,130 Z" fill="var(--bg-bottom)"/>
-                    <line x1="90" y1="140" x2="90" y2="165" stroke="var(--bg-bottom)" stroke-width="4"/>
-                    <line x1="100" y1="140" x2="100" y2="165" stroke="var(--bg-bottom)" stroke-width="4"/>
-                    <line x1="110" y1="140" x2="110" y2="165" stroke="var(--bg-bottom)" stroke-width="4"/>
-                    
-                    <path d="M100,75 C95,75 80,60 70,55 C88,58 95,66 100,70 C105,66 112,58 130,55 C120,60 105,75 100,75 Z" fill="var(--bg-bottom)"/>
+            <div class="whale-container">
+                <svg class="swimming-whale" viewBox="0 0 500 150" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+                    <path d="M 470,70 C 430,40 300,20 150,60 C 80,75 30,60 10,40 C 20,60 15,80 5,90 C 40,85 70,85 120,95 C 200,110 350,115 470,70 Z" />
+                    <path d="M 320,95 C 290,130 260,140 240,130 C 270,110 290,95 320,95 Z" />
+                    <path d="M 180,50 C 170,45 160,40 150,45 C 165,45 175,48 180,50 Z" />
                 </svg>
+            </div>
 
-                <br>
+            <div class="content-wrapper" style="text-align: center;">
                 <span class="rubric-tag">Social Movement Research Task</span>
                 <h1>Sea Shepherd</h1>
                 <p style="font-size: 1.6rem; color: var(--text-dark); font-weight: 800;">Direct Action Marine Conservation.</p>
@@ -430,23 +431,28 @@
     </main>
 
     <script>
+        // --- Generate High Opacity Floating Bubbles ---
         const bubbleContainer = document.getElementById('bubblesContainer');
         for (let i = 0; i < 25; i++) {
             let bubble = document.createElement('div');
             bubble.classList.add('bubble');
             
+            // Randomize size heavily to make it dynamic
             let size = Math.random() * 25 + 10 + 'px';
             bubble.style.width = size;
             bubble.style.height = size;
             
+            // Spread across the screen
             bubble.style.left = Math.random() * 100 + 'vw';
             
+            // Organic animation timings
             bubble.style.animationDuration = Math.random() * 6 + 5 + 's';
             bubble.style.animationDelay = Math.random() * 5 + 's';
             
             bubbleContainer.appendChild(bubble);
         }
 
+        // --- Mouse Tracking for Cursor Glow ---
         const cursorGlow = document.getElementById('cursorGlow');
         let currentX = window.innerWidth / 2;
         let currentY = window.innerHeight / 2;
@@ -454,13 +460,16 @@
         window.addEventListener('mousemove', (e) => {
             currentX = e.clientX;
             currentY = e.clientY;
+            // Update CSS variables for smooth tracking
             document.documentElement.style.setProperty('--mouse-x', `${currentX}px`);
             document.documentElement.style.setProperty('--mouse-y', `${currentY}px`);
         });
 
+        // --- Slide Navigation & Observer ---
         const slides = document.querySelectorAll('.slide');
         const navContainer = document.getElementById('slideNav');
 
+        // Create navigation dots dynamically based on slide count
         slides.forEach((_, index) => {
             const dot = document.createElement('div');
             dot.classList.add('nav-dot');
@@ -472,6 +481,7 @@
 
         const dots = document.querySelectorAll('.nav-dot');
 
+        // Intersection Observer to trigger slide animations
         const observerOptions = {
             root: document.getElementById('scroller'),
             threshold: 0.5 
@@ -480,14 +490,17 @@
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
+                    // Trigger text animations
                     entry.target.classList.add('is-visible');
                     
+                    // Highlight correct dot
                     const index = Array.from(slides).indexOf(entry.target);
                     dots.forEach(dot => dot.classList.remove('active'));
                     if(dots[index]) {
                         dots[index].classList.add('active');
                     }
                 } else {
+                    // Reset animation when scrolled away
                     entry.target.classList.remove('is-visible');
                 }
             });
