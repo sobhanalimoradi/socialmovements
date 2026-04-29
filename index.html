@@ -17,7 +17,7 @@
             /* High Saturation, High Opacity Pastel Blue Vibe */
             --bg-top: #80d8ff; 
             --bg-bottom: #40c4ff;
-            --text-dark: #002538; /* Deep navy for readability */
+            --text-dark: #002538; 
             --text-mid: #004d73;
             --accent-bright: #00121c;
             --bubble-color: rgba(255, 255, 255, 0.65);
@@ -82,12 +82,52 @@
             100% { transform: translateY(-110vh) translateX(30px) scale(1.2); opacity: 0; }
         }
 
+        /* --- Whale Fleet Animation --- */
+        /* This wrapper ensures the whales never cause horizontal scrollbars */
+        .animation-boundary {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .whale-fleet-container {
+            position: absolute;
+            top: 15%;
+            left: -1200px; /* Start completely off-screen to the left */
+            width: 1000px;
+            color: rgba(255, 255, 255, 0.35); /* Pastel integration */
+            /* Linear animation ensures steady, constant speed */
+            animation: swimAcross 30s linear infinite;
+        }
+
+        .swimming-whales {
+            width: 100%;
+            height: auto;
+            /* Separate vertical bobbing so it doesn't affect forward speed */
+            animation: gentleBob 6s ease-in-out infinite alternate;
+        }
+
+        @keyframes swimAcross {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(100vw + 2400px)); } 
+        }
+
+        @keyframes gentleBob {
+            0% { transform: translateY(-15px); }
+            100% { transform: translateY(15px); }
+        }
+
         /* --- Slideshow Layout --- */
         main {
             height: 100vh;
             overflow-y: scroll;
             scroll-snap-type: y mandatory;
             scroll-behavior: smooth;
+            position: relative;
+            z-index: 10; /* Keeps text above whales */
         }
 
         .slide {
@@ -108,7 +148,6 @@
             transform: translateY(40px);
             transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
             text-shadow: 0 2px 15px rgba(255, 255, 255, 0.8);
-            z-index: 10;
         }
 
         .slide.is-visible .content-wrapper {
@@ -166,6 +205,7 @@
 
         strong { color: var(--text-dark); font-weight: 800; }
 
+        /* Staggered List Animations */
         ul { list-style: none; margin-bottom: 30px; }
         
         li {
@@ -193,6 +233,7 @@
         .slide.is-visible li:nth-child(3) { transition-delay: 0.6s; }
         .slide.is-visible li:nth-child(4) { transition-delay: 0.8s; }
 
+        /* Timeline */
         .timeline {
             border-left: 4px solid #fff;
             padding-left: 35px;
@@ -240,37 +281,6 @@
             border-radius: 8px;
         }
 
-        /* --- Custom Swimming Whale Animation --- */
-        .whale-container {
-            position: absolute;
-            top: 25%;
-            left: -50vw; /* Start way off-screen to the left */
-            width: 50vw; 
-            min-width: 400px;
-            color: rgba(255, 255, 255, 0.45); /* Bright pastel integration */
-            z-index: 1; /* Behind the text but above background */
-            pointer-events: none; /* Can't be clicked */
-            animation: swimAcross 22s linear infinite;
-        }
-
-        .swimming-whale {
-            width: 100%;
-            height: auto;
-            animation: whaleBob 5s ease-in-out infinite alternate;
-        }
-
-        @keyframes swimAcross {
-            0% { transform: translateX(0) translateY(0) rotate(-4deg); }
-            25% { transform: translateX(50vw) translateY(-30px) rotate(2deg); }
-            75% { transform: translateX(120vw) translateY(30px) rotate(-4deg); }
-            100% { transform: translateX(180vw) translateY(0) rotate(2deg); }
-        }
-
-        @keyframes whaleBob {
-            0% { transform: translateY(0) rotate(0deg); }
-            100% { transform: translateY(40px) rotate(4deg); }
-        }
-
         /* Slide Nav Dots */
         .slide-nav {
             position: fixed;
@@ -305,19 +315,31 @@
     </div>
     
     <div class="bubbles" id="bubblesContainer"></div>
+    
+    <div class="animation-boundary">
+        <div class="whale-fleet-container">
+            <svg class="swimming-whales" viewBox="0 0 1000 400" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <g id="whale-silhouette">
+                        <path d="M 280,60 C 240,30 140,20 80,50 C 40,65 20,55 5,40 C 15,55 10,70 0,80 C 20,80 40,70 80,75 C 150,85 230,80 280,60 Z" fill="currentColor"/>
+                        <path d="M 180,65 C 170,95 190,115 205,100 C 195,90 185,75 180,65 Z" fill="currentColor"/>
+                        <path d="M 140,35 C 130,20 120,5 110,15 C 120,25 125,30 130,38 Z" fill="currentColor"/>
+                    </g>
+                </defs>
+                <use href="#whale-silhouette" x="650" y="150" transform="scale(1.2)" opacity="0.9" />
+                <use href="#whale-silhouette" x="700" y="270" transform="scale(0.6)" opacity="0.85" />
+                <use href="#whale-silhouette" x="400" y="80" transform="scale(0.95)" opacity="0.7" />
+                <use href="#whale-silhouette" x="150" y="220" transform="scale(0.7)" opacity="0.4" />
+                <use href="#whale-silhouette" x="0" y="100" transform="scale(0.5)" opacity="0.25" />
+            </svg>
+        </div>
+    </div>
+
     <div class="slide-nav" id="slideNav"></div>
 
     <main id="scroller">
         
         <section class="slide">
-            <div class="whale-container">
-                <svg class="swimming-whale" viewBox="0 0 500 150" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-                    <path d="M 470,70 C 430,40 300,20 150,60 C 80,75 30,60 10,40 C 20,60 15,80 5,90 C 40,85 70,85 120,95 C 200,110 350,115 470,70 Z" />
-                    <path d="M 320,95 C 290,130 260,140 240,130 C 270,110 290,95 320,95 Z" />
-                    <path d="M 180,50 C 170,45 160,40 150,45 C 165,45 175,48 180,50 Z" />
-                </svg>
-            </div>
-
             <div class="content-wrapper" style="text-align: center;">
                 <span class="rubric-tag">Social Movement Research Task</span>
                 <h1>Sea Shepherd</h1>
@@ -425,6 +447,19 @@
                 <p>If we look at the hard evidence, Sea Shepherd has been remarkably successful in achieving its goals, despite the massive backlash.</p>
                 <p><strong>Direct Action Success:</strong> During their 12-year campaign in the Southern Ocean, their physical harassment was so relentless that the Japanese fleet consistently failed to meet their catch quotas. Sea Shepherd's interventions directly saved the lives of over 6,000 whales during that specific period alone.</p>
                 <p><strong>Evolution and Legitimacy:</strong> Perhaps their biggest success is how they have matured. Recently, Sea Shepherd Global has transitioned away from just being rogue vigilantes. They now officially partner with the governments of African nations (like Liberia and Gabon). They provide the ships and the crew to help local militaries patrol their own waters, leading to the arrest of dozens of illegal, unreported, and unregulated (IUU) fishing vessels. This proves they've managed to turn their radical tactics into legitimate, systemic change.</p>
+            </div>
+        </section>
+
+        <section class="slide">
+            <div class="content-wrapper">
+                <span class="rubric-tag">Include at least 3 references</span>
+                <h2>Bibliography</h2>
+                <ul>
+                    <li><strong>Sea Shepherd Global. (2024).</strong> <em>Our History & Campaigns</em>. Retrieved from their official website. (Used as a primary source to outline the 1977 origins, key timeline dates, and their current strategies with African governments).</li>
+                    <li><strong>The New York Times. (2013).</strong> <em>Court Orders Anti-Whaling Group to Keep Its Distance</em>. (Media article used to evaluate the legal opposition and repression the movement faced from the Japanese Institute of Cetacean Research).</li>
+                    <li><strong>Animal Planet / Discovery. (2008).</strong> <em>Whale Wars Documentary Series</em>. (Used as a reference to analyze how media weaponization acts as a core strategy and how it heavily influenced societal views).</li>
+                    <li><strong>The Guardian. (2017).</strong> <em>Sea Shepherd drops Antarctic anti-whaling campaign</em>. (Media article used to source evidence on the timeline and evaluate the success of the Antarctic campaigns).</li>
+                </ul>
             </div>
         </section>
 
